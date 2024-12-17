@@ -378,7 +378,25 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    node, is_visited_corner = state
+
+    unvisited = [corner for i, corner in enumerate(corners) if not is_visited_corner[i]]
+    # If all corners are visited, heuristic cost is 0
+    if not unvisited:
+        return 0
+
+    # Calculate the heuristic: Manhattan distance to the nearest unvisited corner
+    # Go to this corner and continue to calculate distance to other corners
+    heuristic_cost = 0
+    while unvisited:
+        min_distance, nearest_corner = min(
+            [(util.manhattanDistance(node, corner), corner) for corner in unvisited],
+            key=lambda x: x[0]
+        )  # Find the closest corner
+        heuristic_cost += min_distance  # Add the distance to the heuristic cost
+        node = nearest_corner  # Move to this corner
+        unvisited.remove(nearest_corner)  # Mark it as visited
+    return heuristic_cost
 
 
 
