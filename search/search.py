@@ -90,7 +90,28 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    start = problem.getStartState()
+    if problem.isGoalState(problem.getStartState()):
+        return []
+
+    stk = util.Stack()
+    visited = set()
+    stk.push((start, []))
+
+    while not stk.isEmpty():
+        current_state, successors = stk.pop()
+
+        if problem.isGoalState(current_state):
+            return successors
+
+        if current_state not in visited:
+            visited.add(current_state)
+            for next_state, action, _ in problem.getSuccessors(current_state):
+                # Cải tiến: kiểm đã visit next state chưa trước khi push
+                if next_state not in visited:
+                    stk.push((next_state, [*successors, action]))
+
+    return []
 
 def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """Search the shallowest nodes in the search tree first."""
