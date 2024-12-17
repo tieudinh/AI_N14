@@ -175,11 +175,11 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[Directi
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
     start = problem.getStartState()
-    if problem.isGoalState(problem.getStartState()):
+    if problem.isGoalState(start):
         return []
 
     p_queue = util.PriorityQueue()
-    visited = set()
+    visited = {start: 0}
     p_queue.push((start, [], 0), 0)
 
     while not p_queue.isEmpty():
@@ -188,13 +188,13 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[Directi
         if problem.isGoalState(current_state):
             return actions
 
-        if current_state not in visited:
-            visited.add(current_state)
-            for next_state, atc, step in problem.getSuccessors(current_state):
-                next_cost = cost + step
-                priority = next_cost + heuristic(next_state, problem)
-                if next_state not in visited:
-                    p_queue.push((next_state, [*actions, atc], next_cost), priority)
+        for next_state, atc, step in problem.getSuccessors(current_state):
+            next_cost = cost + step
+            priority = next_cost + heuristic(next_state, problem)
+            # Check if this path is better than any previously recorded path to next_state
+            if next_state not in visited or visited[next_state] > next_cost:
+                visited[next_state] = next_cost
+                p_queue.push((next_state, [*actions, atc], next_cost), priority)
 
     return []
 
