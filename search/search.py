@@ -91,7 +91,7 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """
     "*** YOUR CODE HERE ***"
     start = problem.getStartState()
-    if problem.isGoalState(problem.getStartState()):
+    if problem.isGoalState(start):
         return []
 
     stk = util.Stack()
@@ -117,7 +117,7 @@ def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
     start = problem.getStartState()
-    if problem.isGoalState(problem.getStartState()):
+    if problem.isGoalState(start):
         return []
 
     queue = util.Queue()
@@ -142,7 +142,7 @@ def uniformCostSearch(problem: SearchProblem) -> List[Directions]:
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
     start = problem.getStartState()
-    if problem.isGoalState(problem.getStartState()):
+    if problem.isGoalState(start):
         return []
 
     p_queue = util.PriorityQueue()
