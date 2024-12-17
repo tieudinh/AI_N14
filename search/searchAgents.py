@@ -487,7 +487,24 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    # List of positions where food is present
+    food_positions = foodGrid.asList()
+    # If no food is left, heuristic is 0
+    if not food_positions:
+        return 0
+
+    # Similar with corner heuristic cost
+    heuristic_cost = 0
+    node = position
+    while food_positions:
+        min_distance, nearest_food_node = min(
+            [(util.manhattanDistance(node, food), food) for food in food_positions],
+            key=lambda x: x[0]
+        )
+        heuristic_cost += min_distance  # Add the distance to the heuristic cost
+        node = nearest_food_node  # Move to nearest food node
+        food_positions.remove(nearest_food_node)  # Mark it as visited
+    return heuristic_cost
 
 
 class ClosestDotSearchAgent(SearchAgent):
