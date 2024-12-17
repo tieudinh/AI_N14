@@ -384,19 +384,8 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
     # If all corners are visited, heuristic cost is 0
     if not unvisited:
         return 0
-
-    # Calculate the heuristic: Manhattan distance to the nearest unvisited corner
-    # Go to this corner and continue to calculate distance to other corners
-    heuristic_cost = 0
-    while unvisited:
-        min_distance, nearest_corner = min(
-            [(util.manhattanDistance(node, corner), corner) for corner in unvisited],
-            key=lambda x: x[0]
-        )  # Find the closest corner
-        heuristic_cost += min_distance  # Add the distance to the heuristic cost
-        node = nearest_corner  # Move to this corner
-        unvisited.remove(nearest_corner)  # Mark it as visited
-    return heuristic_cost
+    
+    return max(util.manhattanDistance(node, food) for food in unvisited)
 
 
 
@@ -493,18 +482,7 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     if not food_positions:
         return 0
 
-    # Similar with corner heuristic cost
-    heuristic_cost = 0
-    node = position
-    while food_positions:
-        min_distance, nearest_food_node = min(
-            [(util.manhattanDistance(node, food), food) for food in food_positions],
-            key=lambda x: x[0]
-        )
-        heuristic_cost += min_distance  # Add the distance to the heuristic cost
-        node = nearest_food_node  # Move to nearest food node
-        food_positions.remove(nearest_food_node)  # Mark it as visited
-    return heuristic_cost
+    return max(util.manhattanDistance(position, food) for food in food_positions)
 
 
 class ClosestDotSearchAgent(SearchAgent):
