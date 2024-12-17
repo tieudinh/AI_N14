@@ -99,17 +99,17 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
     stk.push((start, []))
 
     while not stk.isEmpty():
-        current_state, successors = stk.pop()
+        current_state, actions = stk.pop()
 
         if problem.isGoalState(current_state):
-            return successors
+            return actions
 
         if current_state not in visited:
             visited.add(current_state)
-            for next_state, action, _ in problem.getSuccessors(current_state):
+            for next_state, atc, _ in problem.getSuccessors(current_state):
                 # Cải tiến: kiểm đã visit next state chưa trước khi push
                 if next_state not in visited:
-                    stk.push((next_state, [*successors, action]))
+                    stk.push((next_state, [*actions, atc]))
 
     return []
 
@@ -125,16 +125,16 @@ def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
     queue.push((start, []))
 
     while not queue.isEmpty():
-        current_state, successors = queue.pop()
+        current_state, actions = queue.pop()
 
         if problem.isGoalState(current_state):
-            return successors
+            return actions
 
         if current_state not in visited:
             visited.add(current_state)
-            for next_state, action, _ in problem.getSuccessors(current_state):
+            for next_state, atc, _ in problem.getSuccessors(current_state):
                 if next_state not in visited:
-                    queue.push((next_state, [*successors, action]))
+                    queue.push((next_state, [*actions, atc]))
 
     return []
 
@@ -150,17 +150,17 @@ def uniformCostSearch(problem: SearchProblem) -> List[Directions]:
     p_queue.push((start, [], 0), 0)
 
     while not p_queue.isEmpty():
-        current_state, successors, cost = p_queue.pop()
+        current_state, actions, cost = p_queue.pop()
 
         if problem.isGoalState(current_state):
-            return successors
+            return actions
 
         if current_state not in visited:
             visited.add(current_state)
-            for next_state, action, step in problem.getSuccessors(current_state):
+            for next_state, atc, step in problem.getSuccessors(current_state):
                 next_cost = cost + step
                 if next_state not in visited:
-                    p_queue.push((next_state, [*successors, action], next_cost), next_cost)
+                    p_queue.push((next_state, [*actions, atc], next_cost), next_cost)
 
     return []
 
@@ -183,18 +183,18 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[Directi
     p_queue.push((start, [], 0), 0)
 
     while not p_queue.isEmpty():
-        current_state, successors, cost = p_queue.pop()
+        current_state, actions, cost = p_queue.pop()
 
         if problem.isGoalState(current_state):
-            return successors
+            return actions
 
         if current_state not in visited:
             visited.add(current_state)
-            for next_state, action, step in problem.getSuccessors(current_state):
+            for next_state, atc, step in problem.getSuccessors(current_state):
                 next_cost = cost + step
                 priority = next_cost + heuristic(next_state, problem)
                 if next_state not in visited:
-                    p_queue.push((next_state, [*successors, action], next_cost), priority)
+                    p_queue.push((next_state, [*actions, atc], next_cost), priority)
 
     return []
 
