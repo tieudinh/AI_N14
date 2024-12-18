@@ -146,7 +146,7 @@ def uniformCostSearch(problem: SearchProblem) -> List[Directions]:
         return []
 
     p_queue = util.PriorityQueue()
-    visited = set()
+    visited = {start: 0}
     p_queue.push((start, [], 0), 0)
 
     while not p_queue.isEmpty():
@@ -155,12 +155,12 @@ def uniformCostSearch(problem: SearchProblem) -> List[Directions]:
         if problem.isGoalState(current_state):
             return actions
 
-        if current_state not in visited:
-            visited.add(current_state)
-            for next_state, atc, step in problem.getSuccessors(current_state):
-                next_cost = cost + step
-                if next_state not in visited:
-                    p_queue.push((next_state, [*actions, atc], next_cost), next_cost)
+        for next_state, atc, step in problem.getSuccessors(current_state):
+            next_cost = cost + step
+            # Check if this path is better than any previously recorded path to next_state
+            if next_state not in visited or visited[next_state] > next_cost:
+                visited[next_state] = next_cost
+                p_queue.push((next_state, [*actions, atc], next_cost), next_cost)
 
     return []
 
