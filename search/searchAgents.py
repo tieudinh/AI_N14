@@ -385,7 +385,8 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
     if not unvisited:
         return 0
     
-    return max(util.manhattanDistance(node, food) for food in unvisited)
+    # Heuristic: distance from position to the farthest corner
+    return max(util.manhattanDistance(node, corner) for corner in unvisited)
 
 
 
@@ -482,7 +483,7 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     if not food_positions:
         return 0
 
-    return max(util.manhattanDistance(position, food) for food in food_positions)
+    return max(mazeDistance(position, food, problem.startingGameState) for food in food_positions)
 
 
 class ClosestDotSearchAgent(SearchAgent):
