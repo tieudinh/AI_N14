@@ -13,7 +13,7 @@ e. findPathToClosestDot
 
 ### Auto grader
 ```
-python python autograder.py
+python autograder.py
 ```
 
 ### a. breadthFirstSearch, depthFirstSearch, uniformCostSearch.
